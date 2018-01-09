@@ -12,11 +12,13 @@ page = 1
 time_speed = 1.5
 time_limit = 0
 question = 0
+player_answer = ""
 
 def setup():
     size(800, 650)
 
 def draw():
+    global player_answer
     background(255)
     # Start button
     fill(255, 0, 0)
@@ -29,7 +31,7 @@ def draw():
     textSize(25)
     text("By. Dohyun Kim", 575, 600)
     if page == 2:
-        global time_limit, time_speed, number_1, number_2, score
+        global time_limit, time_speed, number_1, number_2, score, question
         fill(255)
         rect(0, 0, 800, 650)
         fill(0)
@@ -37,33 +39,37 @@ def draw():
         text(str(number_1) + "+" + str(number_2) + "= ?", 200, 200)
         textSize(40)
         text("Score: " + str(score) + "/10", 550, 50)
+        textSize(50)
+        text(str(player_answer), 300, 500)
         fill(255)
         rect(200, 400, 400, 50)
         fill(100)
         rect(200, 400, time_limit, 50)
         time_limit += time_speed
-        global question
-        #player_answer = input("Your answer is:")
         fill(0)
-        textSize(50)
-        #text(str(player_answer), 300, 600)
         if time_limit >= 400:
+            global question
             time_limit = 0
-            fill(0)
-            text("Time over", 200, 500)
-            number_1 = int(random(0, 100))
-            number_2 = int(random(0, 100))
-            question += 1
-        """
-        elif player_answer == answer:
-            fill(0)
-            text("Correct", 200, 500)
-            score += 1
-            question += 1
-            number_1 = int(random(0, 100))
-            number_2 = int(random(0, 100))
-        """
-
+            time_speed = 0
+            if keyTyped == ENTER:
+                if player_answer == answer:
+                    score += 1
+                    player_answer = ""
+                    fill(0)
+                    text("Correct", 200, 500)
+                    question += 1
+                    number_1 = int(random(0, 100))
+                    number_2 = int(random(0, 100))
+                    time_speed = 1.5
+            else:
+                fill(0)
+                text("Time over", 200, 500)
+                number_1 = int(random(0, 100))
+                number_2 = int(random(0, 100))
+                question += 1
+                player_answer = ""
+                time_speed = 1.5
+            
         if question >= 10:
             fill(255)
             rect(0, 0, 800, 650)
@@ -72,10 +78,15 @@ def draw():
             text("Your Mark is", 170, 200)
             text(str(int(score) / 10 * 100) + "%", 320, 400)
 
-# def keyTyped():
+def keyTyped():
+        global player_answer
+        if type(key) is unicode:
+            player_answer = player_answer + key
+        elif keyPressed == BACKSPACE:
+            l = len(player_answer)
+            player_answer = player_answer[0, l - 1]
 
-
-def mouseClicked():
+def mousePressed():
     global button_size, button_x, button_y, page
     radius = button_size / 2.0
     distance_x = abs(mouseX - button_x)
