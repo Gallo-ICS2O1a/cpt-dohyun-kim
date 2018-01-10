@@ -4,7 +4,6 @@ number_1 = int(random(0, 100))
 number_2 = int(random(0, 100))
 score = 0
 mark = score / 20 * 100
-answer = number_1 + number_2
 button_size = 200
 button_x = 400
 button_y = 450
@@ -48,19 +47,18 @@ def draw():
         time_limit += time_speed
         fill(0)
         if time_limit >= 400:
-            global question
+            global question, number_1, number_2
             time_limit = 0
             time_speed = 0
-            if keyTyped == ENTER:
-                if player_answer == answer:
-                    score += 1
-                    player_answer = ""
-                    fill(0)
-                    text("Correct", 200, 500)
-                    question += 1
-                    number_1 = int(random(0, 100))
-                    number_2 = int(random(0, 100))
-                    time_speed = 1.5
+            if str(player_answer) == str(number_1 + number_2):
+                score += 1
+                player_answer = ""
+                fill(0)
+                text("Correct", 200, 500)
+                question += 1
+                number_1 = int(random(0, 100))
+                number_2 = int(random(0, 100))
+                time_speed = 1.5
             else:
                 fill(0)
                 text("Time over", 200, 500)
@@ -69,22 +67,23 @@ def draw():
                 question += 1
                 player_answer = ""
                 time_speed = 1.5
-            
-        if question >= 10:
+        elif question >= 10:
+            global score
             fill(255)
             rect(0, 0, 800, 650)
             fill(0)
             textSize(75)
             text("Your Mark is", 170, 200)
-            text(str(int(score) / 10 * 100) + "%", 320, 400)
+            text(str(score/10 * 100) + "%", 320, 400)
+
 
 def keyTyped():
-        global player_answer
-        if type(key) is unicode:
-            player_answer = player_answer + key
-        elif keyPressed == BACKSPACE:
-            l = len(player_answer)
-            player_answer = player_answer[0, l - 1]
+    global player_answer
+    if type(key) is unicode:
+        player_answer = player_answer + key
+    elif keyPressed == BACKSPACE:
+        l = len(player_answer)
+        player_answer = player_answer[0, l - 1]
 
 def mousePressed():
     global button_size, button_x, button_y, page
