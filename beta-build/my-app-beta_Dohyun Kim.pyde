@@ -12,6 +12,7 @@ time_speed = 2
 time_limit = 0
 question = 0
 player_answer = ""
+number_of_question = 10
 
 def setup():
     size(800, 650)
@@ -47,7 +48,7 @@ def draw():
         time_limit += time_speed
         fill(0)
         if time_limit >= 400:
-            global question, number_1, number_2
+            global question, number_1, number_2, number_of_question
             time_limit = 0
             time_speed = 0
             if str(player_answer) == str(number_1 + number_2):
@@ -63,22 +64,21 @@ def draw():
                 question += 1
                 player_answer = ""
                 time_speed = 2
-        if question >= 10:
+        if question >= number_of_question:
             time_speed = 0
             fill(255)
             rect(0, 0, 800, 650)
             fill(0)
             textSize(75)
             text("Your Mark is", 170, 200)
-            text(str(score / 10 * 100) + "%", 320, 400)
+            text(str(score/number_of_question * 100) + "%", 320, 400)
 
 def keyTyped():
     global player_answer
-    if type(key) is unicode:
+    if key == BACKSPACE:
+        player_answer = player_answer[0 : len(player_answer) - 1]
+    elif type(key) is unicode:
         player_answer = player_answer + key
-    elif key is BACKSPACE:
-        l = len(player_answer)
-        player_answer = player_answer[0, l - 1]
 
 def mousePressed():
     global button_size, button_x, button_y, page
