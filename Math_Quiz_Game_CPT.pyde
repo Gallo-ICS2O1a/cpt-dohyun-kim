@@ -2,16 +2,17 @@
 
 number_1 = int(random(0, 100))
 number_2 = int(random(0, 100))
-score = 0
+score = int(0)
 mark = score / 20 * 100
 button_size = 200
 button_x = 400
 button_y = 450
 page = 1
-time_speed = 1.5
+time_speed = 2
 time_limit = 0
 question = 0
 player_answer = ""
+number_of_question = 10
 
 def setup():
     size(800, 650)
@@ -30,7 +31,7 @@ def draw():
     textSize(25)
     text("By. Dohyun Kim", 575, 600)
     if page == 2:
-        global time_limit, time_speed, number_1, number_2, score, question
+        global time_limit, time_speed, number_1, number_2, question, score
         fill(255)
         rect(0, 0, 800, 650)
         fill(0)
@@ -47,43 +48,37 @@ def draw():
         time_limit += time_speed
         fill(0)
         if time_limit >= 400:
-            global question, number_1, number_2
+            global question, number_1, number_2, number_of_question
             time_limit = 0
             time_speed = 0
             if str(player_answer) == str(number_1 + number_2):
                 score += 1
                 player_answer = ""
-                fill(0)
-                text("Correct", 200, 500)
                 question += 1
                 number_1 = int(random(0, 100))
                 number_2 = int(random(0, 100))
-                time_speed = 1.5
+                time_speed = 2
             else:
-                fill(0)
-                text("Time over", 200, 500)
                 number_1 = int(random(0, 100))
                 number_2 = int(random(0, 100))
                 question += 1
                 player_answer = ""
-                time_speed = 1.5
-        elif question >= 10:
-            global score
+                time_speed = 2
+        if question >= number_of_question:
+            time_speed = 0
             fill(255)
             rect(0, 0, 800, 650)
             fill(0)
             textSize(75)
             text("Your Mark is", 170, 200)
-            text(str(score/10 * 100) + "%", 320, 400)
-
+            text(str(score/number_of_question * 100) + "%", 320, 400)
 
 def keyTyped():
     global player_answer
-    if type(key) is unicode:
+    if key == BACKSPACE:
+        player_answer = player_answer[0 : len(player_answer) - 1]
+    elif type(key) is unicode:
         player_answer = player_answer + key
-    elif keyPressed == BACKSPACE:
-        l = len(player_answer)
-        player_answer = player_answer[0, l - 1]
 
 def mousePressed():
     global button_size, button_x, button_y, page
