@@ -2,8 +2,7 @@
 
 number_1 = int(random(0, 100))
 number_2 = int(random(0, 100))
-score = int(0)
-mark = score / 20 * 100
+score = 0
 button_size = 200
 button_x = 400
 button_y = 450
@@ -12,7 +11,7 @@ time_speed = 2
 time_limit = 0
 question = 0
 player_answer = ""
-number_of_question = 10
+number_of_question = 20
 
 def setup():
     size(800, 650)
@@ -31,14 +30,14 @@ def draw():
     textSize(25)
     text("By. Dohyun Kim", 575, 600)
     if page == 2:
-        global time_limit, time_speed, number_1, number_2, question, score
+        global time_limit, time_speed, number_1, number_2, question, score, number_of_question
         fill(255)
         rect(0, 0, 800, 650)
         fill(0)
         textSize(75)
         text(str(number_1) + "+" + str(number_2) + "= ?", 200, 200)
         textSize(40)
-        text("Score: " + str(score) + "/10", 550, 50)
+        text("Score: " + str(score) + "/" + str(number_of_question), 550, 50)
         textSize(50)
         text(str(player_answer), 300, 500)
         fill(255)
@@ -48,7 +47,7 @@ def draw():
         time_limit += time_speed
         fill(0)
         if time_limit >= 400:
-            global question, number_1, number_2, number_of_question
+            global question, number_1, number_2, score
             time_limit = 0
             time_speed = 0
             if str(player_answer) == str(number_1 + number_2):
@@ -71,8 +70,9 @@ def draw():
             fill(0)
             textSize(75)
             text("Your Mark is", 170, 200)
-            text(str(score/number_of_question * 100) + "%", 320, 400)
-
+            mark = float(score) / float(number_of_question) * 100.0
+            text(str(mark) + "%", 320, 400)
+    
 def keyTyped():
     global player_answer
     if key == BACKSPACE:
@@ -87,4 +87,4 @@ def mousePressed():
     distance_y = abs(mouseY - button_y)
     hypotenuse = sqrt(distance_x ** 2 + distance_y ** 2)
     if hypotenuse <= radius:
-        page += 1
+        page = 2
