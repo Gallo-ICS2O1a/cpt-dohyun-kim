@@ -37,7 +37,7 @@ def draw():
         textSize(75)
         text(str(number_1) + "+" + str(number_2) + "= ?", 200, 200)
         textSize(40)
-        text("Score: " + str(score) + "/" + str(number_of_question), 550, 50)
+        text("Score: " + str(score) + "/" + str(number_of_question), 525, 50)
         textSize(50)
         text(str(player_answer), 300, 500)
         fill(255)
